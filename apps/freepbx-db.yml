@@ -53,10 +53,10 @@
           - '{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env:
-          MYSQL_ROOT_PASSWORD:password
-          MYSQL_DATABASE=asterisk
-          MYSQL_USER=asterisk
-          MYSQL_PASSWORD=asteriskpass
+          - MYSQL_ROOT_PASSWORD=password
+          - MYSQL_DATABASE=asterisk
+          - MYSQL_USER=asterisk
+          - MYSQL_PASSWORD=asteriskpass
         restart_policy: unless-stopped
         networks:
           - name: plexguide
