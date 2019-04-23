@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# Title:      FreePBX
+# Author(s):  FreePBX
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+# CORE (MANDATORY) DO NOT CHANGE ###########################################
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: "freepbx-app"
+        intport: "5060"
+        extport: "5060"
+        intport2: "5160"
+        extport2: "5160"
+        intport3: "18000-18100"
+        extport3: "18000-18100/udp"
+        intport4: "4445"
+        extport4: "4445"
+        image: "tiredofit/freepbx"
+
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+# LABELS ################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/opt/appdata/{{pgrole}}/certs:/certs'
+          - '/opt/appdata/{{pgrole}}/data:/data'
+          - '/opt/appdata/{{pgrole}}/logs:/var/log'
+          - '/opt/appdata/{{pgrole}}/data/www:/var/www/html'
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          ZABBIX_HOSTNAME: freepbx-app
+          RTP_START: 18000
+          RTP_FINISH: 18100
+          DB_EMBEDDED: FALSE
+          DB_HOST: freepbx-db
+          DB_PORT: 3306
+          DB_NAME: asterisk
+          DB_USER: asterisk
+          DB_PASS: asteriskpass
+          ENABLE_FAIL2BAN: FALSE
+
+    # MAIN DEPLOYMENT ##############################################################
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{extport}}:{{intport}}'
+          - '{{extport2}}:{{intport2}}'
+          - '{{extport3}}:{{intport3}}'
+          - '{{extport4}}:{{intport4}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    # POST DEPLOYMENT ##############################################################
+
+    - name: 'Post Deployment Notes'
+      debug:
+        msg: |-
+          * Login Information *  * This should be changed *
