@@ -39,7 +39,7 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD:password
           MYSQL_DATABASE=asterisk
           MYSQL_USER=asterisk
           MYSQL_PASSWORD=asteriskpass
