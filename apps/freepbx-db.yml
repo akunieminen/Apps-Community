@@ -13,10 +13,10 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: "mariadb"
+        pgrole: "freepbx-db"
         intport: "3306"
-        extport: "6603"
-        image: "mariadb:latest"
+        extport: "3306"
+        image: "tiredofit/mariadb"
 
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
@@ -39,7 +39,10 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          MYSQL_ROOT_PASSWORD: plexguide
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE=asterisk
+          MYSQL_USER=asterisk
+          MYSQL_PASSWORD=asteriskpass
 
     # MAIN DEPLOYMENT ##############################################################
 
@@ -65,4 +68,4 @@
     - name: 'Post Deployment Notes'
       debug:
         msg: |-
-          * Login Information * root:plexguide * This should be changed *
+          * Login Information *  * This should be changed *
