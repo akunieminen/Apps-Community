@@ -220,6 +220,8 @@
         intport102: "18098/udp"
         intport103: "18099/udp"
         intport104: "18100/udp"
+        intport105: "443"
+        extport105: "443"
         image: "tiredofit/freepbx"
 
     - name: 'Including cron job'
@@ -231,7 +233,7 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '{{intport}}'
+          traefik.port: '{{intport105}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
@@ -369,6 +371,7 @@
           - '{{extport102}}:{{intport102}}'
           - '{{extport103}}:{{intport103}}'
           - '{{extport104}}:{{intport104}}'
+          - '{{extport105}}:{{intport105}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
