@@ -39,8 +39,10 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: asterisk
+          MYSQL_USER: asterisk
+          MYSQL_PASSWORD: asteriskpass
 
     # MAIN DEPLOYMENT ##############################################################
 
@@ -52,11 +54,7 @@
         published_ports:
           - '{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
-        env:
-          - MYSQL_ROOT_PASSWORD=password
-          - MYSQL_DATABASE=asterisk
-          - MYSQL_USER=asterisk
-          - MYSQL_PASSWORD=asteriskpass
+        env: '{{pg_env}}'
         restart_policy: unless-stopped
         networks:
           - name: plexguide
