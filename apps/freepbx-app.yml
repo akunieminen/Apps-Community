@@ -293,7 +293,6 @@
           - '{{extport26}}:{{intport26}}'
           - '{{extport27}}:{{intport27}}'
           - '{{extport28}}:{{intport28}}'
-          - '{{extport28}}:{{intport28}}'
           - '{{extport29}}:{{intport29}}'
           - '{{extport30}}:{{intport30}}'
           - '{{extport31}}:{{intport31}}'
