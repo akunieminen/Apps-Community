@@ -12,8 +12,8 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: "freepbx-app"
-        intport: "8001"
-        extport: "8001"
+        intport: "80"
+        extport: "80"
         intport2: "8003"
         extport2: "8003"
         intport3: "4445"
@@ -224,6 +224,8 @@
         extport105: "5060"
         intport106: "5160"
         extport106: "5160"
+        intport107: "8001"
+        extport107: "8001"
         image: "tiredofit/freepbx"
 
     - name: 'Including cron job'
@@ -235,7 +237,7 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '{{intport}}'
+          traefik.port: '80'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
 
     - name: 'Setting PG Volumes'
@@ -269,9 +271,9 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{extport}}:{{intport}}'
-          - '{{extport2}}:{{intport2}}'
-          - '{{extport3}}:{{intport3}}'
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
           - '{{extport4}}:{{intport4}}'
           - '{{extport5}}:{{intport5}}'
           - '{{extport6}}:{{intport6}}'
@@ -375,6 +377,7 @@
           - '{{extport104}}:{{intport104}}'
           - '{{extport105}}:{{intport105}}'
           - '{{extport106}}:{{intport106}}'
+          - '{{ports.stdout}}{{extport107}}:{{intport107}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
