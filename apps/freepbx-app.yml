@@ -224,8 +224,8 @@
         extport105: "5060"
         intport106: "5160"
         extport106: "5160"
-        intport107: "8001"
-        extport107: "8001"
+        intport107: "8008"
+        extport107: "8008"
         image: "tiredofit/freepbx"
 
     - name: 'Including cron job'
