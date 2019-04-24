@@ -13,7 +13,7 @@
       set_fact:
         pgrole: "freepbx-app"
         intport: "80"
-        extport: "80"
+        extport: "8001"
         intport2: "8003"
         extport2: "8003"
         intport3: "4445"
