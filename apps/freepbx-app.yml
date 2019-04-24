@@ -13,7 +13,7 @@
       set_fact:
         pgrole: "freepbx-app"
         intport: "80"
-        extport: "8001"
+        extport: "80"
         intport2: "8003"
         extport2: "8003"
         intport3: "4445"
@@ -224,8 +224,10 @@
         extport105: "5060"
         intport106: "5160"
         extport106: "5160"
-        intport107: "8008"
-        extport107: "8008"
+        intport107: "8001"
+        extport107: "8001"
+        intport108: "8008"
+        extport108: "8008"
         image: "tiredofit/freepbx"
 
     - name: 'Including cron job'
@@ -378,6 +380,7 @@
           - '{{extport105}}:{{intport105}}'
           - '{{extport106}}:{{intport106}}'
           - '{{ports.stdout}}{{extport107}}:{{intport107}}'
+          - '{{ports.stdout}}{{extport108}}:{{intport108}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
