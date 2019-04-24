@@ -22,13 +22,7 @@
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
 # LABELS ################################################################
-    - name: 'Adding Traefik'
-      set_fact:
-        pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
-          traefik.enable: 'true'
-          traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}},{{tldset}}'
+    
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -51,8 +45,7 @@
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
-        published_ports:
-          - '{{extport}}:{{intport}}'
+        expose: 3306
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
