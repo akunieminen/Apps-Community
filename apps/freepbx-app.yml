@@ -50,6 +50,8 @@
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
+          PUID: '1000'
+          PGID: '1000'
           VIRTUAL_HOST: freepbx-app.lukuz.xyz
           VIRTUAL_NETWORK: plexguide
           VIRTUAL_PORT: '80'
